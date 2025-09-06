@@ -1,0 +1,94 @@
+@import "tailwindcss";
+@import "./typography.css";
+
+@custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
+
+:root,
+html[data-theme="light"] {
+  /* Catppuccin Latte */
+  --background: #eff1f5;
+  --foreground: #4c4f69;
+  --accent: #1e66f5;
+  --muted: #e6e9ef;
+  --border: #dce0e8;
+}
+
+html[data-theme="dark"] {
+  /* Catppuccin Mocha */
+  --background: #1e1e2e;
+  --foreground: #cdd6f4;
+  --accent: #89b4fa;
+  --muted: #313244;
+  --border: #45475a;
+}
+
+/* Alternative dark theme - Catppuccin Macchiato */
+html[data-theme="dark-alt"] {
+  --background: #24273a;
+  --foreground: #cad3f5;
+  --accent: #8aadf4;
+  --muted: #363a4f;
+  --border: #494d64;
+}
+
+/* Alternative light theme - Catppuccin Frappé */
+html[data-theme="light-alt"] {
+  --background: #303446;
+  --foreground: #c6d0f5;
+  --accent: #8caaee;
+  --muted: #414559;
+  --border: #51576d;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-accent: var(--accent);
+  --color-muted: var(--muted);
+  --color-border: var(--border);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-accent/75;
+    scrollbar-width: auto;
+    scrollbar-color: var(--color-muted) transparent;
+  }
+
+  html {
+    @apply overflow-y-scroll scroll-smooth;
+  }
+
+  body {
+    @apply flex min-h-svh flex-col bg-background font-mono text-foreground selection:bg-accent/75 selection:text-background;
+  }
+
+  a,
+  button {
+    @apply outline-offset-1 outline-accent focus-visible:no-underline focus-visible:outline-2 focus-visible:outline-dashed;
+  }
+
+  button:not(:disabled),
+  [role="button"]:not(:disabled) {
+    cursor: pointer;
+  }
+
+  section,
+  footer {
+    @apply mx-auto max-w-app px-4;
+  }
+}
+
+@utility max-w-app {
+  @apply max-w-3xl;
+}
+
+.active-nav {
+  @apply underline decoration-wavy decoration-2 underline-offset-4;
+}
+
+/* Source: https://piccalil.li/blog/a-more-modern-css-reset/ */
+/* Anything that has been anchored to should have extra scroll margin */
+:target {
+  scroll-margin-block: 1rem;
+}
