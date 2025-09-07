@@ -8,10 +8,13 @@ import IconSunHigh from "@/assets/icons/IconSunHigh.svg";
 import IconMenuDeep from "@/assets/icons/IconMenuDeep.svg";
 import LinkButton from "./LinkButton.astro";
 import { SITE } from "@/config";
+import { getLangFromUrl, useTranslations } from '../i18n/utils';
 
 const { pathname } = Astro.url;
 
-// Remove trailing slash from current pathname if exists
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+
 const currentPath =
   pathname.endsWith("/") && pathname !== "/" ? pathname.slice(0, -1) : pathname;
 
@@ -29,7 +32,7 @@ const isActive = (path: string) => {
     href="#main-content"
     class="absolute start-16 -top-full z-50 bg-background px-3 py-2 text-accent backdrop-blur-lg transition-all focus:top-4"
   >
-    Skip to content
+  { t('nav.skip-content') }
   </a>
   <div
     id="nav-container"
@@ -70,17 +73,17 @@ const isActive = (path: string) => {
         >
           <li class="col-span-2">
             <a href="/posts" class:list={{ "active-nav": isActive("/posts") }}>
-              Posts
+              { t('nav.posts') }
             </a>
           </li>
           <li class="col-span-2">
             <a href="/tags" class:list={{ "active-nav": isActive("/tags") }}>
-              Tags
+              { t('nav.tags') }
             </a>
           </li>
           <li class="col-span-2">
             <a href="/about" class:list={{ "active-nav": isActive("/about") }}>
-              About
+              { t('nav.about') }
             </a>
           </li>
           {
@@ -98,7 +101,7 @@ const isActive = (path: string) => {
                   title="Archives"
                 >
                   <IconArchive class="hidden sm:inline-block" />
-                  <span class="sm:sr-only">Archives</span>
+                  <span class="sm:sr-only">{ t('nav.archives') }</span>
                 </LinkButton>
               </li>
             )
@@ -111,10 +114,10 @@ const isActive = (path: string) => {
                 { "[&>svg]:stroke-accent": isActive("/search") },
               ]}
               ariaLabel="search"
-              title="Search"
+              title={t('nav.search')}
             >
               <IconSearch />
-              <span class="sr-only">Search</span>
+              <span class="sr-only">{ t('nav.search') }</span>
             </LinkButton>
           </li>
           {
@@ -123,7 +126,7 @@ const isActive = (path: string) => {
                 <button
                   id="theme-btn"
                   class="focus-outline relative size-12 p-4 sm:size-8 hover:[&>svg]:stroke-accent"
-                  title="Toggles light & dark"
+                  title={t('nav.theme')}
                   aria-label="auto"
                   aria-live="polite"
                 >
