@@ -1,0 +1,21 @@
+---
+import Header from "@/components/Header.astro";
+import Footer from "@/components/Footer.astro";
+import Breadcrumb from "@/components/Breadcrumb.astro";
+import About from "@/components/About.astro";
+import Layout from "@/layouts/Layout.astro";
+import { SITE } from "@/config";
+
+import { getLangFromUrl, useTranslations } from '../i18n/utils';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+---
+
+<Layout title={`${t('about.title')} | ${SITE.title}`}>
+  <Header />
+  <Breadcrumb />
+  <About />
+  <Footer />
+</Layout>
+

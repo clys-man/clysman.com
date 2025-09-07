@@ -1,0 +1,17 @@
+---
+import { getLangFromUrl, useTranslations } from '../i18n/utils';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+---
+
+<main id="main-content">
+  <section id="about" class="app-prose mb-28 max-w-app prose-img:border-0">
+    <h1 class="text-2xl tracking-wider sm:text-3xl">Sobre</h1>
+
+    <p>
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris in ultrices augue, eget viverra dolor. Cras sit amet tellus euismod, aliquet libero non, tempus mi. Etiam fringilla odio et lacus efficitur tempor. Nullam ultricies aliquam quam a porttitor. Suspendisse id blandit tellus, eu sodales enim. Curabitur molestie malesuada luctus. Duis in nunc ut tellus varius vulputate. Proin finibus ligula at turpis suscipit fringilla.
+    </p>
+  </section>
+</main>
+

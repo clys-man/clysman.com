@@ -21,6 +21,8 @@ export const ui = {
     'main.all-posts': 'All Posts',
     'aria.rss-feed': 'rss feed',
     'title.rss-feed': 'RSS Feed',
+    'about.title': 'About',
+    'about.description': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris in ultrices augue, eget viverra dolor. Cras sit amet tellus euismod, aliquet libero non, tempus mi. Etiam fringilla odio et lacus efficitur tempor. Nullam ultricies aliquam quam a porttitor. Suspendisse id blandit tellus, eu sodales enim. Curabitur molestie malesuada luctus. Duis in nunc ut tellus varius vulputate. Proin finibus ligula at turpis suscipit fringilla.',
   },
   pt_BR: {
     'nav.skip-content': 'Pular para o conteúdo',
@@ -37,5 +39,7 @@ export const ui = {
     'main.all-posts': 'Todas as Postagens',
     'aria.rss-feed': 'feed rss',
     'title.rss-feed': 'Feed RSS',
+    'about.title': 'Sobre',
+    'about.description': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris in ultrices augue, eget viverra dolor. Cras sit amet tellus euismod, aliquet libero non, tempus mi. Etiam fringilla odio et lacus efficitur tempor. Nullam ultricies aliquam quam a porttitor. Suspendisse id blandit tellus, eu sodales enim. Curabitur molestie malesuada luctus. Duis in nunc ut tellus varius vulputate. Proin finibus ligula at turpis suscipit fringilla.',
   },
 } as const;
