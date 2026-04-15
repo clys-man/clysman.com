@@ -11,7 +11,7 @@ import { SITE } from "@/config";
 import { SOCIALS } from "@/constants";
 import { getLangFromUrl, useTranslations } from '../i18n/utils';
 
-const posts = await getCollection("blog");
+const posts = await getCollection("blog_pt");
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 const sortedPosts = getSortedPosts(posts);

@@ -1,0 +1,22 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import MainPage from "@/components/MainPage.astro";
+import Header from "@/components/Header.astro";
+import Footer from "@/components/Footer.astro";
+---
+
+<Layout>
+  <Header />
+  <MainPage />
+  <Footer />
+</Layout>
+
+<script>
+  document.addEventListener("astro:page-load", () => {
+    const indexLayout = (document.querySelector("#main-content") as HTMLElement)
+      ?.dataset?.layout;
+    if (indexLayout) {
+      sessionStorage.setItem("backUrl", "/en/");
+    }
+  });
+</script>

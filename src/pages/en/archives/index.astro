@@ -7,16 +7,14 @@ import Footer from "@/components/Footer.astro";
 import Card from "@/components/Card.astro";
 import getPostsByGroupCondition from "@/utils/getPostsByGroupCondition";
 import { SITE } from "@/config";
-import { getLangFromUrl, useTranslations } from "@/i18n/utils";
+import { useTranslations } from "@/i18n/utils";
 
-// Redirect to 404 page if `showArchives` config is false
 if (!SITE.showArchives) {
   return Astro.redirect("/404");
 }
 
-const posts = await getCollection("blog_pt", ({ data }) => !data.draft);
-const lang = getLangFromUrl(Astro.url);
-const t = useTranslations(lang);
+const posts = await getCollection("blog_en", ({ data }) => !data.draft);
+const t = useTranslations("en");
 ---
 
 <Layout title={`${t("pages.archives.title")} | ${SITE.title}`}>

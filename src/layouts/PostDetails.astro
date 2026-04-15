@@ -1,5 +1,5 @@
 ---
-import { render, type CollectionEntry } from "astro:content";
+import { render, getCollection } from "astro:content";
 import Layout from "@/layouts/Layout.astro";
 import Header from "@/components/Header.astro";
 import Footer from "@/components/Footer.astro";
@@ -14,13 +14,39 @@ import { slugifyStr } from "@/utils/slugify";
 import IconChevronLeft from "@/assets/icons/IconChevronLeft.svg";
 import IconChevronRight from "@/assets/icons/IconChevronRight.svg";
 import { SITE } from "@/config";
+import { getLangFromUrl, useTranslations, getLocalizedPath, getAlternateLang } from "@/i18n/utils";
+import type { BlogEntry } from "@/types";
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+const alternateLang = getAlternateLang(lang);
 
 export interface Props {
-  post: CollectionEntry<"blog">;
-  posts: CollectionEntry<"blog">[];
+  post: BlogEntry;
+  posts: BlogEntry[];
 }
 
 const { post, posts } = Astro.props;
+
+// ========== Translation detection ==========
+// Check if this post has a translation in the other language collection.
+// Posts are matched by shared slug (same filename/path in both collections).
+const postSlug = getPath(post.id, post.filePath, false);
+const altCollection = alternateLang === "en" ? "blog_en" : "blog_pt";
+const altPosts = await getCollection(altCollection);
+const translatedPost = altPosts.find(
+  ap => getPath(ap.id, ap.filePath, false) === postSlug
+);
+const translationPath = translatedPost
+  ? getLocalizedPath(alternateLang, getPath(translatedPost.id, translatedPost.filePath))
+  : null;
+
+// Translation banner labels
+const translationBannerText =
+  lang === "pt_BR"
+    ? "Este post também está disponível em"
+    : "This post is also available in";
+const translationLinkText = lang === "pt_BR" ? "English" : "Português";
 
 const {
   title,
@@ -92,7 +118,23 @@ const nextPost =
       { "mt-8": !SITE.showBackButton },
     ]}
     data-pagefind-body
+    data-copy-label={t('post.copy')}
+    data-copied-label={t('post.copied')}
   >
+    {/* Translation availability banner */}
+    {
+      translationPath && (
+        <div class="mb-4 rounded-md border border-accent/30 bg-accent/5 px-4 py-2 text-sm">
+          🌐 {translationBannerText}{" "}
+          <a
+            href={translationPath}
+            class="font-medium text-accent underline decoration-dashed underline-offset-4 hover:opacity-80"
+          >
+            {translationLinkText}
+          </a>
+        </div>
+      )
+    }
     <h1
       transition:name={slugifyStr(title)}
       class="inline-block text-2xl font-bold text-accent sm:text-3xl"
@@ -141,7 +183,7 @@ const nextPost =
           >
             <IconChevronLeft class="inline-block flex-none rtl:rotate-180" />
             <div>
-              <span>Previous Post</span>
+              <span>{t('post.previous')}</span>
               <div class="text-sm text-accent/85">{prevPost.title}</div>
             </div>
           </a>
@@ -154,7 +196,7 @@ const nextPost =
             class="flex w-full justify-end gap-1 text-end hover:opacity-75 sm:col-start-2"
           >
             <div>
-              <span>Next Post</span>
+              <span>{t('post.next')}</span>
               <div class="text-sm text-accent/85">{nextPost.title}</div>
             </div>
             <IconChevronRight class="inline-block flex-none rtl:rotate-180" />
@@ -233,7 +275,9 @@ const nextPost =
   /** Attaches copy buttons to code blocks in the document,
    * allowing users to copy code easily. */
   function attachCopyButtons() {
-    const copyButtonLabel = "Copy";
+    const copyBtn = document.querySelector<HTMLElement>("[data-copy-label]");
+    const copyButtonLabel = copyBtn?.dataset.copyLabel ?? "Copy";
+    const copiedLabel = copyBtn?.dataset.copiedLabel ?? "Copied";
     const codeBlocks = Array.from(document.querySelectorAll("pre"));
 
     for (const codeBlock of codeBlocks) {
@@ -272,7 +316,7 @@ const nextPost =
       await navigator.clipboard.writeText(text ?? "");
 
       // visual feedback that task is completed
-      button.innerText = "Copied";
+      button.innerText = copiedLabel;
 
       setTimeout(() => {
         button.innerText = copyButtonLabel;
