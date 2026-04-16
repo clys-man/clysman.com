@@ -3,6 +3,7 @@ import { getCollection } from "astro:content";
 import { getPath } from "@/utils/getPath";
 import { generateOgImageForPost } from "@/utils/generateOgImages";
 import { SITE } from "@/config";
+import type { BlogEntry } from "@/types";
 
 export async function getStaticPaths() {
   if (!SITE.dynamicOgImage) {
@@ -27,7 +28,7 @@ export const GET: APIRoute = async ({ props }) => {
     });
   }
 
-  const buffer = await generateOgImageForPost(props);
+  const buffer = await generateOgImageForPost(props as BlogEntry);
   return new Response(new Uint8Array(buffer), {
     headers: { "Content-Type": "image/png" },
   });
