@@ -1,6 +1,6 @@
 export const languages = {
-  en: "English",
   pt_BR: "Português",
+  en: "English",
 };
 
 export const defaultLang = "pt_BR";
@@ -31,6 +31,7 @@ export const ui = {
     "post.next": "Next Post",
     "post.copy": "Copy",
     "post.copied": "Copied",
+    "post.share": "Share this post on:",
     "pages.posts.title": "Posts",
     "pages.posts.desc": "All the articles I've posted.",
     "pages.tags.title": "Tags",
@@ -81,6 +82,7 @@ export const ui = {
     "post.next": "Próximo Post",
     "post.copy": "Copiar",
     "post.copied": "Copiado",
+    "post.share": "Compartilhe este post em:",
     "pages.posts.title": "Postagens",
     "pages.posts.desc": "Todos os artigos que publiquei.",
     "pages.tags.title": "Tags",

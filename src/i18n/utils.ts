@@ -6,6 +6,11 @@ export function getLangFromUrl(url: URL) {
   return defaultLang;
 }
 
+export function getCollectionName(lang: keyof typeof ui): string {
+  if (lang === "pt_BR") return "blog_pt";
+  return `blog_${lang}`;
+}
+
 export function useTranslations(lang: keyof typeof ui) {
   return function t(key: keyof (typeof ui)[typeof defaultLang]) {
     return ui[lang][key] || ui[defaultLang][key];
@@ -40,7 +45,6 @@ export function getAlternateLang(
  */
 export function getAlternatePath(url: URL): string {
   const lang = getLangFromUrl(url);
-  const alternateLang = getAlternateLang(lang);
   const pathname = url.pathname;
 
   if (lang === defaultLang) {
