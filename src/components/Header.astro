@@ -94,14 +94,6 @@ const isActive = (path: string) => {
           </li>
           <li class="col-span-2">
             <a
-              href={getLocalizedPath(lang, "/tags")}
-              class:list={{ "active-nav": isActive("/tags") }}
-            >
-              {t("nav.tags")}
-            </a>
-          </li>
-          <li class="col-span-2">
-            <a
               href={getLocalizedPath(lang, "/about")}
               class:list={{ "active-nav": isActive("/about") }}
             >

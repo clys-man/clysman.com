@@ -8,8 +8,9 @@ import Footer from "@/components/Footer.astro";
 import Card from "@/components/Card.astro";
 import Pagination from "@/components/Pagination.astro";
 import getSortedPosts from "@/utils/getSortedPosts";
+import getTagsWithCount from "@/utils/getTagsWithCount";
 import { SITE } from "@/config";
-import { useTranslations } from "@/i18n/utils";
+import { getLocalizedPath, useTranslations } from "@/i18n/utils";
 
 export const getStaticPaths = (async ({ paginate }) => {
   const posts = await getCollection("blog_en", ({ data }) => !data.draft);
@@ -17,15 +18,61 @@ export const getStaticPaths = (async ({ paginate }) => {
 }) satisfies GetStaticPaths;
 
 const { page } = Astro.props;
+const posts = await getCollection("blog_en");
+const tags = getTagsWithCount(posts);
+const topTags = tags.slice(0, 10);
 const t = useTranslations("en");
 ---
 
 <Layout title={`${t("pages.posts.title")} | ${SITE.title}`}>
   <Header />
   <Main pageTitle={t("pages.posts.title")} pageDesc={t("pages.posts.desc")}>
-    <ul>
-      {page.data.map(data => <Card {...data} />)}
-    </ul>
+    <div class="relative">
+      <aside
+        class="mb-8 border-y border-dashed py-4 lg:fixed lg:top-32 lg:left-[calc(50%+27rem)] lg:mb-0 lg:w-60 lg:border-y-0 lg:py-0"
+        aria-labelledby="posts-tags-title"
+      >
+        <div class="mb-3 flex items-baseline justify-between gap-3">
+          <h2 id="posts-tags-title" class="text-base font-semibold">
+            {t("pages.tags.title")}
+          </h2>
+          <span class="text-xs text-foreground/70">{tags.length}</span>
+        </div>
+        <ul class="flex gap-2 overflow-x-auto pb-2 lg:block lg:space-y-1 lg:overflow-visible lg:pb-0">
+          {
+            topTags.map(({ tag, tagName, count }) => (
+              <li class="shrink-0 lg:shrink">
+                <a
+                  href={getLocalizedPath("en", `/tags/${tag}/`)}
+                  class="group flex items-center justify-between gap-3 rounded-sm px-2 py-1.5 text-sm hover:bg-muted focus-visible:no-underline"
+                >
+                  <span class="min-w-0 truncate text-accent decoration-dashed underline-offset-4 group-hover:underline">
+                    #{tagName}
+                  </span>
+                  <span class="rounded-sm bg-muted px-1.5 py-0.5 text-xs text-foreground/75 group-hover:bg-background">
+                    {count}
+                  </span>
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+        {
+          tags.length > topTags.length && (
+            <a
+              href={getLocalizedPath("en", "/tags/")}
+              class="mt-4 inline-flex text-sm font-medium text-accent underline decoration-dashed underline-offset-4 hover:opacity-80"
+            >
+              {t("pages.tags.view-more")}
+            </a>
+          )
+        }
+      </aside>
+
+      <ul>
+        {page.data.map(data => <Card {...data} />)}
+      </ul>
+    </div>
   </Main>
 
   <Pagination {page} />
