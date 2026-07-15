@@ -2,11 +2,13 @@
 import { slugifyStr } from "@/utils/slugify";
 import type { BlogEntry } from "@/types";
 import { getPath } from "@/utils/getPath";
+import { getLangFromUrl, getLocalizedPath } from "@/i18n/utils";
 import Datetime from "./Datetime.astro";
 
 export type Props = BlogEntry & { variant?: "h2" | "h3" };
 
 const { variant = "h2", data, id, filePath } = Astro.props;
+const lang = getLangFromUrl(Astro.url);
 
 const { title, description, pubDatetime, modDatetime, timezone } = data;
 
@@ -18,7 +20,7 @@ const headerProps = {
 
 <li class="my-6">
   <a
-    href={getPath(id, filePath)}
+    href={getLocalizedPath(lang, getPath(id, filePath))}
     class="inline-block text-lg font-medium text-accent decoration-dashed underline-offset-4 focus-visible:no-underline focus-visible:underline-offset-0"
   >
     {
